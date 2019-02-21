@@ -18,9 +18,18 @@ public class AllDB extends AppCompatActivity {
     private TextView dataView;
 
     @Override
+    public void onPause() {
+        super.onPause();
+        overridePendingTransition(0, 0);
+    }
+
+
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_db);
+        overridePendingTransition(0, 0);
 
         dataView = findViewById(R.id.dataView);
 

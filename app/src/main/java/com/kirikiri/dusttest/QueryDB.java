@@ -26,9 +26,16 @@ public class QueryDB extends AppCompatActivity implements View.OnClickListener {
     private DatabaseReference myRef;
 
     @Override
+    public void onPause() {
+        super.onPause();
+        overridePendingTransition(0, 0);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_query_db);
+        overridePendingTransition(0, 0);
 
         queryInp = findViewById(R.id.queryInp);
         querySendBtn = findViewById(R.id.querySendBtn);
@@ -44,7 +51,7 @@ public class QueryDB extends AppCompatActivity implements View.OnClickListener {
     public void onClick(View v) {
         if(!queryInp.getText().toString().isEmpty()) {
             myRef = database.getReference(queryInp.getText().toString());
-
+            Log.d(TAG, "Path: " + queryInp.getText().toString());
         }
         else {
             myRef = database.getReference();

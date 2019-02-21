@@ -4,14 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AllDB">
+    tools:context=".LatestPoint">
 
-
-    <TextView
-        android:id="@+id/dataView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/loading"
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

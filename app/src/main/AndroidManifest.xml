@@ -11,9 +11,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ListAll"></activity>
-        <activity android:name=".QueryDB" />
-        <activity android:name=".AllDB" />
+        <activity android:name=".LatestPoint" android:label="@string/latest"></activity>
+        <activity
+            android:name=".ListAll"
+            android:label="@string/listDB" />
+        <activity
+            android:name=".QueryDB"
+            android:label="@string/query" />
+        <activity
+            android:name=".AllDB"
+            android:label="@string/readALLDB" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

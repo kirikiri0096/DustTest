@@ -9,11 +9,9 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
-import com.google.firebase.FirebaseApp;
-
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private TextView MainMenu;
-    private RadioButton readALLDB, queryRa;
+    private RadioButton readALLDB, queryRa, listDB, lastest;
     private Button startDebugButt;
 
     @Override
@@ -24,6 +22,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         MainMenu = findViewById(R.id.MainMenu);
         readALLDB = findViewById(R.id.readALLDB);
         queryRa = findViewById(R.id.queryRa);
+        listDB = findViewById(R.id.listDB);
+        lastest = findViewById(R.id.lastest);
         startDebugButt = findViewById(R.id.startDebugButt);
 
         startDebugButt.setOnClickListener(this);
@@ -38,6 +38,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             intent = new Intent(this, AllDB.class);
         if(queryRa.isChecked())
             intent = new Intent(this, QueryDB.class);
+        if(listDB.isChecked())
+            intent = new Intent(this, ListAll.class);
+        if(lastest.isChecked())
+            intent = new Intent(this, LatestPoint.class);
 
         switch (v.getId()) {
             case R.id.startDebugButt:
