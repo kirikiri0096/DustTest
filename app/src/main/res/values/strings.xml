@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">DustTest</string>
+    <string name="debug_menu">Debug Menu</string>
+    <string name="readALLDB">readAllData</string>
+    <string name="send">send</string>
+    <string name="pathToData">Path to Data</string>
+    <string name="error">Error</string>
+    <string name="query">query</string>
+    <string name="noValueKey">No value for key:</string>
+</resources>
