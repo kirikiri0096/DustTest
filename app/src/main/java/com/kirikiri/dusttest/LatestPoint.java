@@ -2,7 +2,7 @@ package com.kirikiri.dusttest;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,7 +23,8 @@ public class LatestPoint extends AppCompatActivity {
     private String[] path;
     private String[][] deviceData;
     private String[][] pmData;
-    private ListView listView;
+    private TextView latestTxt;
+    private String[] strData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +32,7 @@ public class LatestPoint extends AppCompatActivity {
         setContentView(R.layout.activity_latest_point);
         overridePendingTransition(0, 0);
 
-        listView = findViewById(R.id.listView);
+        latestTxt = findViewById(R.id.latestTxt);
 
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
@@ -41,6 +42,7 @@ public class LatestPoint extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.hasChildren()) {
                     int i = 0;
+                    strData = new String[(int) dataSnapshot.getChildrenCount()];
                     deviceData = new String[(int) dataSnapshot.getChildrenCount()][5];
                     for (DataSnapshot deviceName : dataSnapshot.getChildren()) {
                         deviceData[i][0] = deviceName.getKey();
@@ -60,7 +62,6 @@ public class LatestPoint extends AppCompatActivity {
             }
         });
 
-
     }
 
     @Override
@@ -77,7 +78,6 @@ public class LatestPoint extends AppCompatActivity {
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
                     deviceData[position][1] = "/" + data.getKey();
                     path[position] = deviceData[0][0] + deviceData[0][1];
-                    Log.d(TAG, "Path = " + path[position]);
                 }
                 Query latestMonth = myRef.child(path[position]).orderByKey().limitToLast(1);
                 latestMonth.addValueEventListener(new ValueEventListener() {
@@ -86,7 +86,6 @@ public class LatestPoint extends AppCompatActivity {
                         for (DataSnapshot data : dataSnapshot.getChildren()) {
                             deviceData[position][2] = "/" + data.getKey();
                             path[position] = deviceData[position][0] + deviceData[position][1] + deviceData[position][2];
-                            Log.d(TAG, "Path = " + path[position]);
                         }
                         Query latestDate = myRef.child(path[position]).orderByKey().limitToLast(1);
                         latestDate.addValueEventListener(new ValueEventListener() {
@@ -95,7 +94,6 @@ public class LatestPoint extends AppCompatActivity {
                                 for (DataSnapshot data : dataSnapshot.getChildren()) {
                                     deviceData[position][3] = "/" + data.getKey();
                                     path[position] = deviceData[position][0] + deviceData[position][1] + deviceData[position][2] + deviceData[position][3];
-                                    Log.d(TAG, "Path = " + path[position]);
                                 }
                                 Query latestTime = myRef.child(path[position]).orderByKey().limitToLast(1);
                                 latestTime.addValueEventListener(new ValueEventListener() {
@@ -104,24 +102,40 @@ public class LatestPoint extends AppCompatActivity {
                                         for (DataSnapshot data : dataSnapshot.getChildren()) {
                                             deviceData[position][4] = "/" + data.getKey();
                                             path[position] = deviceData[position][0] + deviceData[position][1] + deviceData[position][2] + deviceData[position][3] + deviceData[position][4];
-                                            Log.d(TAG, "Path = " + path[position]);
                                         }
                                         DatabaseReference localRef = database.getReference(path[position]);
                                         localRef.addValueEventListener(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                                if(dataSnapshot.hasChildren()) {
-                                                    for(DataSnapshot data: dataSnapshot.getChildren()) {
-                                                        if(data.getKey().equals("PM01"))
+                                                StringBuilder sb = null;
+                                                if (dataSnapshot.hasChildren()) {
+                                                    for (DataSnapshot data : dataSnapshot.getChildren()) {
+                                                        sb = new StringBuilder();
+                                                        if (data.getKey().equals("PM01"))
                                                             pmData[position][0] = data.getValue().toString();
-                                                        if(data.getKey().equals("PM10"))
+                                                        if (data.getKey().equals("PM10"))
                                                             pmData[position][1] = data.getValue().toString();
-                                                        if(data.getKey().equals("PM25"))
+                                                        if (data.getKey().equals("PM25"))
                                                             pmData[position][2] = data.getValue().toString();
+                                                        sb.append("Device: ");
+                                                        sb.append(deviceData[position][0]);
+                                                        sb.append("; PM01 = ");
+                                                        sb.append(pmData[position][0]);
+                                                        sb.append(" PM10 = ");
+                                                        sb.append(pmData[position][1]);
+                                                        sb.append(" PM25 = ");
+                                                        sb.append(pmData[position][2]);
+                                                        sb.append("\n");
                                                     }
+                                                    strData[position] = sb.toString();
                                                 }
-
-
+                                                if(sb!=null) {
+                                                    String a = "";
+                                                    for(String data: strData) {
+                                                        a += data;
+                                                    }
+                                                    latestTxt.setText(a);
+                                                }
 
                                             }
 
