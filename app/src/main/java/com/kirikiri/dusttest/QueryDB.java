@@ -40,15 +40,17 @@ public class QueryDB extends AppCompatActivity implements View.OnClickListener {
         queryInp = findViewById(R.id.queryInp);
         querySendBtn = findViewById(R.id.querySendBtn);
         queryTxt = findViewById(R.id.queryTxt);
-
         querySendBtn.setOnClickListener(this);
 
+        //Database Initialization
         database = FirebaseDatabase.getInstance();
 
     }
 
     @Override
     public void onClick(View v) {
+        //If EditText is not empty then use path from EditText
+        //Else if EditText is empty then fetch all data
         if(!queryInp.getText().toString().isEmpty()) {
             myRef = database.getReference(queryInp.getText().toString());
             Log.d(TAG, "Path: " + queryInp.getText().toString());
@@ -65,14 +67,14 @@ public class QueryDB extends AppCompatActivity implements View.OnClickListener {
                     queryTxt.setText(dataSnapshot.getValue().toString());
                 else
                     queryTxt.setText(getString(R.string.noValueKey) + queryInp.getText().toString());
-                Log.d(TAG, "Data is: " + dataSnapshot.toString());
+                Log.d(TAG, "Query Complete" + dataSnapshot.toString());
             }
 
             @Override
             public void onCancelled(DatabaseError error) {
                 // Failed to read value
                 queryTxt.setText(error.toException().toString());
-                Log.w(TAG, "Failed to read value.", error.toException());
+                Log.w(TAG, "Failed to query data for this path", error.toException());
             }
         });
     }

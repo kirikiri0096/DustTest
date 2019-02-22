@@ -34,12 +34,15 @@ public class LatestPoint extends AppCompatActivity {
 
         latestTxt = findViewById(R.id.latestTxt);
 
+        //Initial database
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
 
+        //getting data
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                //Getting device's name and save into deviceData[x][0]
                 if (dataSnapshot.hasChildren()) {
                     int i = 0;
                     strData = new String[(int) dataSnapshot.getChildrenCount()];
@@ -58,7 +61,7 @@ public class LatestPoint extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                Log.w(TAG, "Failed to query in first level: ", databaseError.toException());
             }
         });
 
@@ -77,7 +80,7 @@ public class LatestPoint extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
                     deviceData[position][1] = "/" + data.getKey();
-                    path[position] = deviceData[0][0] + deviceData[0][1];
+                    path[position] = deviceData[position][0] + deviceData[position][1];
                 }
                 Query latestMonth = myRef.child(path[position]).orderByKey().limitToLast(1);
                 latestMonth.addValueEventListener(new ValueEventListener() {
@@ -117,16 +120,16 @@ public class LatestPoint extends AppCompatActivity {
                                                             pmData[position][1] = data.getValue().toString();
                                                         if (data.getKey().equals("PM25"))
                                                             pmData[position][2] = data.getValue().toString();
-                                                        sb.append("Device: ");
-                                                        sb.append(deviceData[position][0]);
-                                                        sb.append("; PM01 = ");
-                                                        sb.append(pmData[position][0]);
-                                                        sb.append(" PM10 = ");
-                                                        sb.append(pmData[position][1]);
-                                                        sb.append(" PM25 = ");
-                                                        sb.append(pmData[position][2]);
-                                                        sb.append("\n");
                                                     }
+                                                    sb.append("Device: ");
+                                                    sb.append(deviceData[position][0]);
+                                                    sb.append("; PM01 = ");
+                                                    sb.append(pmData[position][0]);
+                                                    sb.append(" PM10 = ");
+                                                    sb.append(pmData[position][1]);
+                                                    sb.append(" PM25 = ");
+                                                    sb.append(pmData[position][2]);
+                                                    sb.append("\n");
                                                     strData[position] = sb.toString();
                                                 }
                                                 if(sb!=null) {

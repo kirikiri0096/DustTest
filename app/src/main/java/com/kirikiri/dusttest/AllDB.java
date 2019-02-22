@@ -33,6 +33,7 @@ public class AllDB extends AppCompatActivity {
 
         dataView = findViewById(R.id.dataView);
 
+        //Initialize Realtime database
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference();
 
@@ -40,19 +41,19 @@ public class AllDB extends AppCompatActivity {
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                dataView.setText(dataSnapshot.getValue().toString());
-                Log.d(TAG, "Value is: " + dataSnapshot.toString());
-//                String keyV = "";
-//                for(DataSnapshot data: dataSnapshot.getChildren()) {
-//                    keyV += data.getKey() + ", ";
-//                }
-//                Log.d(TAG, "Key is: " + keyV);
+                //Display Data Into TextView
+                if(dataSnapshot.getValue() != null)
+                    dataView.setText(dataSnapshot.getValue().toString());
+                else
+                    dataView.setText(getString(R.string.noData));
+                Log.i(TAG, "Fetch all data complete" );
+
             }
 
             @Override
             public void onCancelled(DatabaseError error) {
                 // Failed to read value
-                Log.w(TAG, "Failed to read value.", error.toException());
+                Log.w(TAG, "Failed to fetch data.", error.toException());
             }
         });
     }

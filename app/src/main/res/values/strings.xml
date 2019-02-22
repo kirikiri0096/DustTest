@@ -6,8 +6,9 @@
     <string name="pathToData">Path to Data</string>
     <string name="error">Error</string>
     <string name="query">query</string>
-    <string name="noValueKey">No value for key:</string>
+    <string name="noValueKey">No value for path:</string>
     <string name="listDB">listDB</string>
     <string name="loading">Loading</string>
     <string name="latest">latest</string>
+    <string name="noData">No Value</string>
 </resources>
